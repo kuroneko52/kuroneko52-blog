@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
@@ -7,106 +6,31 @@ import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const posts = (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			main {
-				width: 960px;
-			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<Header />
-		<main>
-			<section>
-				<ul>
-					{posts.map((post) => (
-						<li>
-							<a href={`/blog/${post.id}/`}>
-								{post.data.heroImage && (
-									<Image width={720} height={360} src={post.data.heroImage} alt="" />
-								)}
-								<h4 class="title">{post.data.title}</h4>
-								<p class="date">
-									<FormattedDate date={post.data.pubDate} />
-								</p>
-							</a>
-						</li>
-					))}
-				</ul>
-			</section>
-		</main>
-		<Footer />
-	</body>
+<html lang="ja">
+	<head><BaseHead title={`記事一覧 | ${SITE_TITLE}`} description={SITE_DESCRIPTION} /></head>
+	<body><Header /><main class="archive"><p class="eyebrow"><span>✳</span> BLOG / ARCHIVE</p><h1>記事一覧</h1><p class="description">これまでに書いた記事を、新しい順に並べています。</p><p class="total">{posts.length} POSTS</p><div class="post-list">{posts.map((post) => <article><a class="post-link" href={`/blog/${post.id}/`}><div class="post-image">{post.data.heroImage && <img src={post.data.heroImage.src} alt="" loading="lazy" />}</div><div><p class="date"><FormattedDate date={post.data.pubDate} /></p><h2>{post.data.title}</h2><p class="excerpt">{post.data.description}</p><span class="read">記事を読む →</span></div></a></article>)}</div><a class="back" href="/">← ホームへ</a></main><Footer /></body>
 </html>
+
+<style>
+	.archive { width: min(780px, calc(100% - 40px)); margin: auto; padding-top: 62px; }
+	.eyebrow { margin-bottom: 9px; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .08em; }
+	.eyebrow span { color: var(--astro); }
+	h1 { margin: 0 0 8px; font-size: 38px; letter-spacing: -.06em; }
+	.description { margin: 0; color: var(--muted); font-size: 13px; }
+	.total { margin: 30px 0 0; padding-bottom: 10px; border-bottom: 1px solid var(--line); color: #9aa0aa; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: .08em; }
+	.post-list article { border-bottom: 1px solid var(--line); }
+	.post-link { display: grid; grid-template-columns: 150px 1fr; gap: 20px; padding: 17px 0; text-decoration: none; }
+	.post-image { min-height: 105px; overflow: hidden; border-radius: 5px; background: var(--astro-pale); }
+	.post-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+	.post-link:hover .post-image img { transform: scale(1.04); }
+	.date { margin: 0 0 5px; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 9px; }
+	h2 { margin: 0 0 5px; font-size: 17px; line-height: 1.5; }
+	.excerpt { margin: 0 0 7px; color: var(--muted); font-size: 11px; }
+	.read { color: var(--astro); font-size: 10px; font-weight: 700; }
+	.back { display: inline-block; margin-top: 24px; color: var(--muted); font-size: 11px; text-decoration: none; }
+	@media (max-width: 500px) { .archive { width: calc(100% - 32px); padding-top: 43px; } h1 { font-size: 32px; } .post-link { grid-template-columns: 105px 1fr; gap: 13px; } .post-image { min-height: 90px; } h2 { font-size: 14px; } .excerpt { font-size: 10px; } }
+</style>
