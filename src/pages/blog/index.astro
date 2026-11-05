@@ -12,23 +12,55 @@ const posts = (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueO
 <!doctype html>
 <html lang="ja">
 	<head><BaseHead title={`記事一覧 | ${SITE_TITLE}`} description={SITE_DESCRIPTION} /></head>
-	<body><Header /><main class="archive"><p class="eyebrow">BLOG / ARCHIVE</p><h1>記事一覧</h1><p class="description">これまでに書いた記事を、新しい順に並べています。</p><p class="total">{posts.length} POSTS</p><div class="post-list">{posts.map((post) => <article><a class="post-link" href={`/blog/${post.id}/`}><div class="post-image">{post.data.heroImage && <img src={post.data.heroImage.src} alt="" loading="lazy" />}</div><div><p class="date"><FormattedDate date={post.data.pubDate} /></p><h2>{post.data.title}</h2><p class="excerpt">{post.data.description}</p><span class="read">記事を読む →</span></div></a></article>)}</div><a class="back" href="/">← ホームへ</a></main><Footer /></body>
+	<body><Header /><main class="archive">
+		<header class="archive-header"><p class="eyebrow">ARCHIVE</p><h1>記事一覧</h1><p>書いたものを、新しい順に。</p></header>
+		<div class="archive-tools"><label for="post-search">記事を検索</label><input id="post-search" type="search" placeholder="題名や本文の概要から検索" autocomplete="off" /><p class="result-count" aria-live="polite">全 {posts.length} 件</p></div>
+		<div class="post-list">{posts.map((post) => <article class="post-item" data-search={`${post.data.title} ${post.data.description}`}><a href={`/blog/${post.id}/`}><time><FormattedDate date={post.data.pubDate} /></time><span class="post-copy"><h2>{post.data.title}</h2><span class="excerpt">{post.data.description}</span></span><span class="arrow" aria-hidden="true">↗</span></a></article>)}</div>
+		<p class="no-results" hidden>該当する記事はありません。</p><a class="back-link" href="/">← ホームへ戻る</a>
+	</main><Footer />
+	<script>
+		const search = document.querySelector<HTMLInputElement>('#post-search');
+		const items = Array.from(document.querySelectorAll<HTMLElement>('.post-item'));
+		const count = document.querySelector<HTMLElement>('.result-count');
+		const empty = document.querySelector<HTMLElement>('.no-results');
+		search?.addEventListener('input', () => {
+			const query = search.value.trim().normalize('NFKC').toLocaleLowerCase('ja');
+			let visible = 0;
+			for (const item of items) {
+				const matches = (item.dataset.search ?? '').normalize('NFKC').toLocaleLowerCase('ja').includes(query);
+				item.hidden = !matches;
+				if (matches) visible += 1;
+			}
+			if (count) count.textContent = query ? `${visible} 件` : `全 ${items.length} 件`;
+			if (empty) empty.hidden = visible !== 0;
+		});
+	</script>
+	</body>
 </html>
 
 <style>
-	.archive { width: min(780px, calc(100% - 40px)); margin: auto; padding-top: 62px; }
-	.eyebrow { margin-bottom: 9px; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .08em; }
-	h1 { margin: 0 0 8px; font-size: 38px; letter-spacing: -.06em; }
-	.description { margin: 0; color: var(--muted); font-size: 13px; }
-	.total { margin: 30px 0 0; padding-bottom: 10px; border-bottom: 1px solid var(--line); color: var(--muted); font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: .08em; }
-	.post-list article { border-bottom: 1px solid var(--line); }
-	.post-link { display: grid; grid-template-columns: 150px 1fr; gap: 20px; padding: 17px 0; text-decoration: none; }
-	.post-image { min-height: 105px; overflow: hidden; border-radius: 3px; background: var(--astro-pale); }
-	.post-image img { width: 100%; height: 100%; object-fit: cover; transition: none; }
-	.date { margin: 0 0 5px; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 9px; }
-	h2 { margin: 0 0 5px; font-size: 17px; line-height: 1.5; }
-	.excerpt { margin: 0 0 7px; color: var(--muted); font-size: 11px; }
-	.read { color: var(--astro); font-size: 10px; font-weight: 700; }
-	.back { display: inline-block; margin-top: 24px; color: var(--muted); font-size: 11px; text-decoration: none; }
-	@media (max-width: 500px) { .archive { width: calc(100% - 32px); padding-top: 43px; } h1 { font-size: 32px; } .post-link { grid-template-columns: 105px 1fr; gap: 13px; } .post-image { min-height: 90px; } h2 { font-size: 14px; } .excerpt { font-size: 10px; } }
+	.archive { width: min(720px, calc(100% - 40px)); margin: auto; padding-top: 65px; }
+	.archive-header { margin-bottom: 35px; }
+	.eyebrow { margin: 0 0 8px; color: var(--astro); font-size: 10px; letter-spacing: .12em; }
+	h1 { margin: 0 0 7px; font-size: 36px; font-weight: 500; letter-spacing: -.05em; }
+	.archive-header > p:last-child { margin: 0; color: var(--muted); font-size: 13px; }
+	.archive-tools { margin-bottom: 10px; }
+	.archive-tools label { display: block; margin-bottom: 7px; color: var(--muted); font-size: 11px; }
+	.archive-tools input { width: 100%; padding: 11px 12px; border: 1px solid var(--line); border-radius: 2px; background: var(--surface); color: var(--ink); font: inherit; font-size: 13px; }
+	.archive-tools input::placeholder { color: #777; }
+	.archive-tools input:focus { border-color: var(--astro); outline: 1px solid var(--astro); }
+	.result-count { margin: 10px 0 0; color: var(--muted); font-size: 10px; }
+	.post-item { border-top: 1px solid var(--line); }
+	.post-item:last-child { border-bottom: 1px solid var(--line); }
+	.post-item[hidden] { display: none; }
+	.post-item > a { display: grid; grid-template-columns: 102px 1fr 18px; align-items: baseline; gap: 14px; padding: 17px 2px; text-decoration: none; }
+	.post-item time { color: var(--muted); font-size: 11px; white-space: nowrap; }
+	.post-copy h2 { margin: 0 0 4px; font-size: 15px; font-weight: 600; line-height: 1.6; }
+	.excerpt { color: var(--muted); font-size: 12px; line-height: 1.7; }
+	.arrow { color: var(--muted); font-size: 12px; text-align: right; }
+	.post-item a:hover h2, .post-item a:hover .arrow { color: var(--astro); }
+	.no-results { margin: 22px 0; color: var(--muted); font-size: 13px; }
+	.back-link { display: inline-block; margin-top: 25px; color: var(--muted); font-size: 11px; text-decoration: none; }
+	.back-link:hover { color: var(--astro); }
+	@media (max-width: 600px) { .archive { width: calc(100% - 32px); padding-top: 45px; } h1 { font-size: 31px; } .post-item > a { grid-template-columns: 80px 1fr 14px; gap: 10px; padding: 14px 0; } .post-copy h2 { font-size: 13px; } .excerpt { font-size: 11px; } }
 </style>
