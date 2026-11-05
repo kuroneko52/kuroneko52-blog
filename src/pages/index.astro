@@ -16,10 +16,10 @@ const featured = posts[0];
 	<body>
 		<Header />
 		<main class="home">
-			<section class="welcome"><p class="eyebrow"><span>✳</span> ASTRO / PERSONAL BLOG</p><h1>こんにちは。<br />日々のことを、<span>書いています。</span></h1><p class="intro">暮らしのなかの発見や、つくったもの、考えたこと。気軽に読める記事を少しずつ更新しています。</p><a class="all-link" href="/blog">記事一覧を見る <span>→</span></a></section>
+			<section class="welcome"><p class="eyebrow">ASTRO / PERSONAL BLOG</p><h1>こんにちは。<br />日々のことを、<span>書いています。</span></h1><p class="intro">暮らしのなかの発見や、つくったもの、考えたこと。気軽に読める記事を少しずつ更新しています。</p><a class="all-link" href="/blog">記事一覧を見る <span>→</span></a></section>
 			{featured && <section class="featured"><div class="section-title"><h2>最近の記事</h2><a href="/blog">すべて見る →</a></div><a class="featured-card" href={`/blog/${featured.id}/`}><div class="cover">{featured.data.heroImage && <img src={featured.data.heroImage.src} alt="" />}</div><div class="feature-copy"><p class="date"><FormattedDate date={featured.data.pubDate} /><span> · </span> FEATURED</p><h3>{featured.data.title}</h3><p>{featured.data.description}</p><span class="read">続きを読む <span>→</span></span></div></a></section>}
 			<section class="more"><div class="section-title"><h2>ほかの記事</h2><span class="count">{posts.length} POSTS</span></div><ul>{posts.slice(1, 5).map((post) => <li><a href={`/blog/${post.id}/`}><span class="list-date"><FormattedDate date={post.data.pubDate} /></span><span class="list-title">{post.data.title}</span><span class="arrow">↗</span></a></li>)}</ul></section>
-			<section class="about"><span class="about-icon">✳</span><p>このブログについて <a href="/about">プロフィールを見る →</a></p></section>
+			<section class="about"><span class="about-icon" aria-hidden="true">k</span><p>このブログについて <a href="/about">プロフィールを見る →</a></p></section>
 		</main>
 		<Footer />
 	</body>
@@ -30,7 +30,6 @@ const featured = posts[0];
 	.welcome { padding: 82px 0 64px; }
 	.eyebrow, .date, .count { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .08em; }
 	.eyebrow { margin-bottom: 15px; color: var(--muted); }
-	.eyebrow span { margin-right: 6px; color: var(--astro); }
 	h1 { margin-bottom: 16px; font-size: clamp(32px, 6vw, 47px); letter-spacing: -.06em; line-height: 1.35; }
 	h1 span { color: var(--astro); }
 	.intro { max-width: 540px; margin: 0 0 22px; color: var(--muted); font-size: 14px; }
@@ -40,9 +39,9 @@ const featured = posts[0];
 	.section-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
 	.section-title h2 { margin: 0; font-size: 17px; letter-spacing: -.03em; }
 	.section-title > a { color: var(--muted); font-size: 11px; text-decoration: none; }
-	.featured-card { display: grid; grid-template-columns: 220px 1fr; gap: 22px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; text-decoration: none; transition: border-color .2s, transform .2s; }
-	.featured-card:hover { transform: translateY(-2px); border-color: #f0a17e; }
-	.cover { min-height: 160px; overflow: hidden; border-radius: 5px; background: var(--astro-pale); }
+	.featured-card { display: grid; grid-template-columns: 220px 1fr; gap: 22px; padding: 12px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); text-decoration: none; transition: border-color .2s; }
+	.featured-card:hover { border-color: var(--astro); }
+	.cover { min-height: 160px; overflow: hidden; border-radius: 2px; background: var(--astro-pale); }
 	.cover img { width: 100%; height: 100%; object-fit: cover; }
 	.feature-copy { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 10px 12px 10px 0; }
 	.date { margin: 0 0 8px; color: var(--muted); font-size: 9px; }
@@ -52,7 +51,7 @@ const featured = posts[0];
 	.read { margin-top: auto; color: var(--astro); font-size: 11px; font-weight: 700; }
 	.read span { margin-left: 5px; }
 	.more { margin-top: 32px; }
-	.count { color: #9aa0aa; font-size: 9px; }
+	.count { color: var(--muted); font-size: 9px; }
 	.more ul { margin: 0; padding: 0; list-style: none; }
 	.more li { border-top: 1px solid var(--line); }
 	.more li:last-child { border-bottom: 1px solid var(--line); }
@@ -60,9 +59,9 @@ const featured = posts[0];
 	.more li a:hover .list-title { color: var(--astro); }
 	.list-date { color: var(--muted); font-family: 'DM Mono', monospace; font-size: 10px; }
 	.list-title { font-size: 13px; font-weight: 600; }
-	.arrow { color: #a4a8ae; font-size: 12px; text-align: right; }
-	.about { display: flex; align-items: center; gap: 12px; margin-top: 32px; padding: 16px; border-radius: 6px; background: var(--surface); }
-	.about-icon { color: var(--astro); font-size: 19px; }
+	.arrow { color: var(--muted); font-size: 12px; text-align: right; }
+	.about { display: flex; align-items: center; gap: 12px; margin-top: 32px; padding: 16px; border: 1px solid var(--line); background: var(--surface); }
+	.about-icon { display: grid; width: 25px; height: 25px; place-items: center; border: 1px solid var(--astro); color: var(--astro); font-family: 'DM Mono', monospace; font-size: 13px; }
 	.about p { margin: 0; font-size: 12px; font-weight: 600; }
 	.about a { margin-left: 8px; color: var(--muted); font-size: 11px; font-weight: 400; text-decoration: none; }
 	@media (max-width: 600px) { .home { width: calc(100% - 32px); } .welcome { padding: 57px 0 48px; } .featured-card { grid-template-columns: 1fr; gap: 12px; } .cover { min-height: 190px; } .feature-copy { padding: 3px 4px 5px; } .more li a { grid-template-columns: 85px 1fr 15px; } .list-title { font-size: 12px; } .about { align-items: flex-start; } .about a { display: block; margin: 3px 0 0; } }

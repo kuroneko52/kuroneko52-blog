@@ -6,7 +6,7 @@ import HeaderLink from './HeaderLink.astro';
 <header class="site-header">
 	<nav aria-label="メインナビゲーション">
 		<a class="brand" href="/" aria-label={`${SITE_TITLE} ホーム`}>
-			<svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2.5 19.5 12.5 29.5 16l-10 3.5L16 29.5l-3.5-10L2.5 16l10-3.5L16 2.5Z" fill="currentColor"/><circle cx="16" cy="16" r="3" fill="var(--paper)"/></svg>
+			<span class="brand-mark" aria-hidden="true">k</span>
 			<span>{SITE_TITLE}</span>
 		</a>
 		<div class="nav-links"><HeaderLink href="/">ホーム</HeaderLink><HeaderLink href="/blog">記事</HeaderLink><HeaderLink href="/about">このブログについて</HeaderLink></div>
@@ -18,11 +18,11 @@ import HeaderLink from './HeaderLink.astro';
 	.site-header { border-bottom: 1px solid var(--line); background: var(--paper); }
 	nav { width: min(1040px, calc(100% - 40px)); min-height: 72px; margin: auto; display: flex; align-items: center; gap: 30px; }
 	.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); font-size: 15px; font-weight: 750; text-decoration: none; white-space: nowrap; }
-	.brand-mark { width: 27px; height: 27px; color: var(--astro); }
+	.brand-mark { display: grid; width: 27px; height: 27px; place-items: center; border: 1px solid var(--astro); color: var(--astro); font-family: 'DM Mono', monospace; font-size: 16px; font-weight: 500; }
 	.nav-links { display: flex; align-items: center; gap: 26px; margin-left: auto; }
 	.nav-links :global(a) { color: var(--muted); font-size: 13px; text-decoration: none; }
 	.nav-links :global(a:hover), .nav-links :global(a.active) { color: var(--astro); }
-	.rss-link { padding: 5px 10px; border: 1px solid var(--line); border-radius: 5px; color: var(--muted); font-size: 11px; text-decoration: none; }
+	.rss-link { padding: 5px 10px; border: 1px solid var(--line); border-radius: 3px; color: var(--muted); font-size: 11px; text-decoration: none; }
 	.rss-link:hover { border-color: var(--astro); color: var(--astro); }
 	.rss-link span { margin-left: 4px; }
 	@media (max-width: 600px) { nav { width: calc(100% - 28px); min-height: 64px; flex-wrap: wrap; gap: 0 12px; } .brand { font-size: 13px; } .brand-mark { width: 23px; } .nav-links { order: 3; width: 100%; justify-content: center; gap: 24px; padding: 0 0 13px; } }

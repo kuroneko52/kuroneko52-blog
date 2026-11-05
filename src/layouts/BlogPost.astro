@@ -13,20 +13,20 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 <!doctype html>
 <html lang="ja">
 	<head><BaseHead title={`${title} | ${SITE_TITLE}`} description={description} image={heroImage} /></head>
-	<body><Header /><main class="article-page"><nav class="breadcrumbs" aria-label="パンくずリスト"><a href="/">ホーム</a><span>/</span><a href="/blog">記事一覧</a></nav><article><header class="article-header"><p class="eyebrow">BLOG POST <span>✳</span></p><h1>{title}</h1><p class="description">{description}</p><div class="meta"><span>kuroneko52</span><span>·</span><FormattedDate date={pubDate} />{updatedDate && <><span>·</span><span>更新 <FormattedDate date={updatedDate} /></span></>}</div></header>{heroImage && <img class="hero-image" src={heroImage.src} alt="" />}<div class="prose"><slot /></div></article><nav class="article-nav"><a href="/blog">← 記事一覧へ</a><a href="/">ホームへ ↗</a></nav></main><Footer /></body>
+	<body><Header /><main class="article-page"><nav class="breadcrumbs" aria-label="パンくずリスト"><a href="/">ホーム</a><span>/</span><a href="/blog">記事一覧</a></nav><article><header class="article-header"><p class="eyebrow">BLOG POST <span>·</span> PERSONAL NOTES</p><h1>{title}</h1><p class="description">{description}</p><div class="meta"><span>kuroneko52</span><span>·</span><FormattedDate date={pubDate} />{updatedDate && <><span>·</span><span>更新 <FormattedDate date={updatedDate} /></span></>}</div></header>{heroImage && <img class="hero-image" src={heroImage.src} alt="" />}<div class="prose"><slot /></div></article><nav class="article-nav"><a href="/blog">← 記事一覧へ</a><a href="/">ホームへ ↗</a></nav></main><Footer /></body>
 </html>
 
 <style>
 	.article-page { width: min(780px, calc(100% - 40px)); margin: auto; padding-top: 24px; }
-	.breadcrumbs { display: flex; gap: 9px; color: #9aa0aa; font-size: 10px; }
+	.breadcrumbs { display: flex; gap: 9px; color: var(--muted); font-size: 10px; }
 	.breadcrumbs a { color: var(--muted); text-decoration: none; }
 	.article-header { max-width: 680px; margin: auto; padding: 47px 0 26px; }
 	.eyebrow { margin-bottom: 10px; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: .08em; }
-	.eyebrow span { margin-left: 5px; color: var(--astro); }
+	.eyebrow span { color: var(--astro); }
 	h1 { margin: 0 0 10px; font-size: clamp(28px, 5vw, 40px); letter-spacing: -.055em; line-height: 1.4; }
 	.description { margin: 0 0 13px; color: var(--muted); font-size: 13px; }
 	.meta { display: flex; gap: 9px; color: var(--muted); font-size: 10px; }
-	.hero-image { width: 100%; max-height: 390px; margin: 0 0 32px; border-radius: 7px; object-fit: cover; }
+	.hero-image { width: 100%; max-height: 390px; margin: 0 0 32px; border-radius: 4px; object-fit: cover; }
 	.article-nav { display: flex; justify-content: space-between; margin-top: 36px; padding-top: 15px; border-top: 1px solid var(--line); }
 	.article-nav a { color: var(--muted); font-size: 11px; text-decoration: none; }
 	.article-nav a:hover { color: var(--astro); }
