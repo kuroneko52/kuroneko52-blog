@@ -10,21 +10,29 @@
 	--astro-pale: #2b211e;
 	font-family: var(--font-atkinson), 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
 	color: var(--ink);
-	background-color: var(--paper);
+	background: var(--paper);
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
 * { box-sizing: border-box; }
-html { min-width: 320px; min-height: 100%; background-color: var(--paper); }
-body { min-height: 100vh; margin: 0; background-color: var(--paper); color: var(--ink); font-size: 15px; line-height: 1.8; }
+html { min-width: 320px; min-height: 100%; background: var(--paper); }
+body { min-height: 100vh; margin: 0; background: var(--paper); color: var(--ink); font-size: 15px; line-height: 1.8; }
 a { color: inherit; }
 img { display: block; max-width: 100%; height: auto; }
 ::selection { color: var(--ink); background: #663b2b; }
 :focus-visible { outline: 2px solid var(--astro); outline-offset: 4px; }
 h1, h2, h3, h4, p { margin-top: 0; }
 .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+/* ClientRouter enables instant in-site navigation; suppress its default cross-fade. */
+::view-transition-group(*),
+::view-transition-old(*),
+::view-transition-new(*) {
+	animation: none !important;
+}
+
 .prose { max-width: 640px; margin: auto; color: #d0cec8; font-size: 17px; line-height: 2.05; }
 .prose > :first-child { margin-top: 0; }
 .prose h2, .prose h3, .prose h4 { color: var(--ink); line-height: 1.55; }
